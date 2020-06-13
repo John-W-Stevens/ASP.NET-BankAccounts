@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Account";
+}
+
+@model User
+
+<div class="row">
+    <div class="col-12 col-md-8">
+        <h1>Welcome, @Model.FirstName @Model.LastName</h1>
+    </div>
+    <div class="col-12 col-md-4">
+        <h4>Current Balance: $@Model.Balance.ToString("0.00")</h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <p class="error-message">@ViewBag.ErrorMessage</p>
+    </div>
+</div>
+
+<form class="form-horizontal row" action="/account" method="post">
+    <label class="col-form-label col-4 col-md-3 offset-md-2">Deposit/Withdraw:</label>
+    <div class="col-2">
+        <input type="number" step="0.01" class="form-control" name="Amount"/>
+    </div>
+    <div class="form-group col-2">
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-12 col-md-8 offset-md-2">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Amount</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var transaction in Model.CreatedTransactions.OrderByDescending(t => t.CreatedAt))
+                {
+                    <tr>
+                        <td>$@transaction.Amount.ToString("0.00")</td>
+                        <td>@transaction.CreatedAt.ToString("MMM dd, yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
